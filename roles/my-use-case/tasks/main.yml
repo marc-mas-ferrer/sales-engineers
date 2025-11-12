@@ -6,7 +6,4 @@
     name: app-hipstershop
 
 - include_role:
-    name: app-easytrade
-
-- include_role:
     name: dashboard
