@@ -1,9 +1,18 @@
 ---
 - include_role:
-    name: "k3s"
+    name: microk8s
 
 - include_role:
     name: app-easytrade
+  vars:
+    easytrade_namespace: "easytrade" # namespace that EasyTrade will be deployed in
+    easytrade_domain: "easytrade.{{ ingress_domain }}" #ingress domain for regular EasyTrade  
 
+- include_role:
+    name: app-hipstershop
+  vars:
+    hipstershop_namespace: "hipstershop" # namespace that hipstershop will be deployed in
+    hipstershop_domain: "hipstershop.{{ ingress_domain }}"
+  
 - include_role:
     name: dashboard
