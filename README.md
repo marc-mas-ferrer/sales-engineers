@@ -1,4 +1,4 @@
-# Dynatrace Basic Observability
+# Dynatrace for Sales Engineers
 
 ## Version & Compatibility
 
