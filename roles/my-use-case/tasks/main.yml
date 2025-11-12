@@ -3,11 +3,6 @@
     name: "k3s"
 
 - include_role:
-    name: dt-operator
-  vars:
-    log_monitoring: "fluentbit"
-
-- include_role:
     name: app-easytrade
 
 - include_role:
