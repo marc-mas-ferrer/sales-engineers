@@ -3,7 +3,10 @@
     name: "k3s"
 
 - include_role:
-    name: app-hipstershop
+    name: app-easytrade
+
+- include_role:
+    name: app-easytravel    
 
 - include_role:
     name: dashboard
