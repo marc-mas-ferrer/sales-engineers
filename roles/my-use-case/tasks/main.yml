@@ -12,3 +12,80 @@
 
 - include_role:
     name: dashboard
+
+- include_role:
+    name: dt-access-token
+  vars:
+    access_token_var_name: "dt_access_token_name"
+    access_token_scope: ["entities.read", "settings.read", "settings.write", "ReadConfig", "WriteConfig"]
+
+- name: Configure global anomaly detection services
+  uri:
+    url: "{{ dynatrace_tenant_url }}/api/v2/settings/objects"
+    method: POST
+    headers:
+      accept: "application/json"
+      Content-Type: "application/json; charset=utf-8"
+      Authorization: "Api-Token {{ dt_access_token_name }}"
+    body: |
+      [
+        {
+            "schemaId":"builtin:anomaly-detection.services",
+            "schemaVersion":"0.0.19",
+            "scope":"environment",
+            "value":{
+                "responseTime":{
+                    "enabled":true,
+                    "detectionMode":"auto",
+                    "autoDetection":{
+                    "responseTimeAll":{
+                        "degradationMilliseconds":100,
+                        "degradationPercent":50
+                    },
+                    "responseTimeSlowest":{
+                        "slowestDegradationMilliseconds":1000,
+                        "slowestDegradationPercent":100
+                    },
+                    "overAlertingProtection":{
+                        "requestsPerMinute":10,
+                        "minutesAbnormalState":1
+                    }
+                    }
+                },
+                "failureRate":{
+                    "enabled":true,
+                    "detectionMode":"fixed",
+                    "fixedDetection":{
+                    "threshold":50,
+                    "overAlertingProtection":{
+                        "requestsPerMinute":0,
+                        "minutesAbnormalState":1
+                    },
+                    "sensitivity":"low"
+                    }
+                },
+                "loadDrops":{
+                    "enabled":false
+                },
+                "loadSpikes":{
+                    "enabled":false
+                }
+            }
+        }
+      ]
+    body_format: json
+    status_code: 200
+
+- name: Enable feature flag
+  uri:
+    url: "https://easytrade.{{ ingress_domain }}/feature-flag-service/v1/flags/credit_card_meltdown"
+    method: PUT
+    headers:
+      accept: "application/json"
+      Content-Type: "application/json"
+    body: |
+      {
+        "enabled": true
+      }
+    body_format: json
+    status_code: 200
