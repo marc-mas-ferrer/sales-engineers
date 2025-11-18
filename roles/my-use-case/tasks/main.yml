@@ -131,7 +131,7 @@
                     "threshold":10,
                     "overAlertingProtection":{
                         "requestsPerMinute":0,
-                        "minutesAbnormalState":5
+                        "minutesAbnormalState":3
                     },
                     "sensitivity":"low"
                     }
@@ -141,91 +141,6 @@
                 },
                 "loadSpikes":{
                     "enabled":false
-                }
-            }
-        }
-      ]
-    body_format: json
-    status_code: 200
-
-- name: Configure global anomaly detection kubernetes
-  uri:
-    url: "{{ dynatrace_tenant_url }}/api/v2/settings/objects"
-    method: POST
-    headers:
-      accept: "application/json"
-      Content-Type: "application/json; charset=utf-8"
-      Authorization: "Api-Token {{ dt_access_token_name }}"
-    body: |
-      [
-        {
-            "schemaId": "builtin:anomaly-detection.kubernetes.workload",
-            "schemaVersion": "1.10.2",
-            "scope": "environment",
-            "value": {
-                "containerRestarts": {
-                    "enabled": true,
-                    "configuration": {
-                        "threshold": 1,
-                        "samplePeriodInMinutes": 3,
-                        "observationPeriodInMinutes": 5
-                    }
-                },
-                "deploymentStuck": {
-                    "enabled": true,
-                    "configuration": {
-                        "samplePeriodInMinutes": 3,
-                        "observationPeriodInMinutes": 5
-                    }
-                },
-                "pendingPods": {
-                    "enabled": true,
-                    "configuration": {
-                        "threshold": 1,
-                        "samplePeriodInMinutes": 10,
-                        "observationPeriodInMinutes": 15
-                    }
-                },
-                "podStuckInTerminating": {
-                    "enabled": true,
-                    "configuration": {
-                        "samplePeriodInMinutes": 10,
-                        "observationPeriodInMinutes": 15
-                    }
-                },
-                "workloadWithoutReadyPods": {
-                    "enabled": true,
-                    "configuration": {
-                        "samplePeriodInMinutes": 10,
-                        "observationPeriodInMinutes": 15
-                    }
-                },
-                "notAllPodsReady": {
-                    "enabled": false
-                },
-                "highMemoryUsage": {
-                    "enabled": false
-                },
-                "highCpuUsage": {
-                    "enabled": false
-                },
-                "highCpuThrottling": {
-                    "enabled": false
-                },
-                "oomKills": {
-                    "enabled": true
-                },
-                "jobFailureEvents": {
-                    "enabled": false
-                },
-                "podBackoffEvents": {
-                    "enabled": false
-                },
-                "podEvictionEvents": {
-                    "enabled": true
-                },
-                "podPreemptionEvents": {
-                    "enabled": true
                 }
             }
         }
