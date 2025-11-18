@@ -148,7 +148,7 @@
     body_format: json
     status_code: 200
 
-- name: Configure global anomaly detection 
+- name: Configure global anomaly detection kubernetes
   uri:
     url: "{{ dynatrace_tenant_url }}/api/v2/settings/objects"
     method: POST
