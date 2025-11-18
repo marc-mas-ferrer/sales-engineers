@@ -17,7 +17,79 @@
     name: dt-access-token
   vars:
     access_token_var_name: "dt_access_token_name"
-    access_token_scope: ["entities.read", "settings.read", "settings.write", "ReadConfig", "WriteConfig"]
+    access_token_scope: ["entities.read", "settings.read", "settings.write", "ReadConfig", "WriteConfig", "ExternalSyntheticIntegration"]
+
+- name: Create HTTP test
+  uri:
+    url: "{{ dynatrace_tenant_url }}/api/v1/synthetic/monitors"
+    method: POST
+    headers:
+      accept: "application/json; charset=utf-8"
+      Content-Type: "application/json; charset=utf-8"
+      Authorization: "Api-Token {{ dt_access_token_name }}"
+    body: |
+      [
+                {
+          "entityId": "HTTP_CHECK-6B38F13633D8614E",
+          "name": "Enable problem 2",
+          "frequencyMin": 0,
+          "enabled": true,
+          "type": "HTTP",
+          "createdFrom": "API",
+          "script": {
+            "version": "1.0",
+            "requests": [
+              {
+                "description": "Enable",
+                "url": "https://easytrade.{{ ingress_domain }}/feature-flag-service/v1/flags/credit_card_meltdown",
+                "method": "PUT",
+                "requestBody": "{\"enabled\": true}",
+                "configuration": {
+                  "requestHeaders": [
+                    {
+                      "name": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "acceptAnyCertificate": false,
+                  "followRedirects": true,
+                  "shouldNotPersistSensitiveData": false
+                }
+              }
+            ]
+          },
+          "locations": [
+            "GEOLOCATION-E7F41460B2A0E4B3"
+          ],
+          "anomalyDetection": {
+            "outageHandling": {
+              "globalOutage": false,
+              "localOutage": false,
+              "localOutagePolicy": {
+                "affectedLocations": null,
+                "consecutiveRuns": null
+              }
+            },
+            "loadingTimeThresholds": {
+              "enabled": false,
+              "thresholds": []
+            }
+          },
+          "tags": [],
+          "managementZones": [],
+          "automaticallyAssignedApps": [],
+          "manuallyAssignedApps": [],
+          "requests": [
+            {
+              "entityId": "HTTP_CHECK_STEP-01C91E9353842DB5",
+              "name": "Enable",
+              "sequenceNumber": 1
+            }
+          ]
+        }
+      ]
+    body_format: json
+    status_code: 200
 
 - name: Configure global anomaly detection services
   uri:
@@ -56,7 +128,7 @@
                     "enabled":true,
                     "detectionMode":"fixed",
                     "fixedDetection":{
-                    "threshold":50,
+                    "threshold":10,
                     "overAlertingProtection":{
                         "requestsPerMinute":0,
                         "minutesAbnormalState":1
@@ -73,19 +145,5 @@
             }
         }
       ]
-    body_format: json
-    status_code: 200
-
-- name: Enable feature flag
-  uri:
-    url: "https://easytrade.{{ ingress_domain }}/feature-flag-service/v1/flags/credit_card_meltdown"
-    method: PUT
-    headers:
-      accept: "application/json"
-      Content-Type: "application/json"
-    body: |
-      {
-        "enabled": true
-      }
     body_format: json
     status_code: 200
