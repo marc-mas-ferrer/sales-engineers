@@ -28,11 +28,11 @@
       Content-Type: "application/json; charset=utf-8"
       Authorization: "Api-Token {{ dt_access_token_name }}"
     body: |
-      [
-                {
+      
+        {
           "entityId": "HTTP_CHECK-6B38F13633D8614E",
-          "name": "Enable problem 2",
-          "frequencyMin": 0,
+          "name": "Enable problem",
+          "frequencyMin": 5,
           "enabled": true,
           "type": "HTTP",
           "createdFrom": "API",
@@ -87,7 +87,7 @@
             }
           ]
         }
-      ]
+      
     body_format: json
     status_code: 200
 
