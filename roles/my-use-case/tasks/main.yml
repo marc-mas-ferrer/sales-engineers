@@ -128,10 +128,10 @@
                     "enabled":true,
                     "detectionMode":"fixed",
                     "fixedDetection":{
-                    "threshold":10,
+                    "threshold":50,
                     "overAlertingProtection":{
                         "requestsPerMinute":0,
-                        "minutesAbnormalState":5
+                        "minutesAbnormalState":8
                     },
                     "sensitivity":"low"
                     }
