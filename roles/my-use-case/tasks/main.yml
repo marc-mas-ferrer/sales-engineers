@@ -229,6 +229,6 @@
                 }
             }
         }
-    ]
+      ]
     body_format: json
     status_code: 200
