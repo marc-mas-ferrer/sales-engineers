@@ -164,12 +164,7 @@
             "scope": "environment",
             "value": {
                 "containerRestarts": {
-                    "enabled": true,
-                    "configuration": {
-                        "threshold": 1,
-                        "samplePeriodInMinutes": 3,
-                        "observationPeriodInMinutes": 5
-                    }
+                    "enabled": false
                 },
                 "deploymentStuck": {
                     "enabled": true,
@@ -194,11 +189,7 @@
                     }
                 },
                 "workloadWithoutReadyPods": {
-                    "enabled": true,
-                    "configuration": {
-                        "samplePeriodInMinutes": 10,
-                        "observationPeriodInMinutes": 15
-                    }
+                    "enabled": false
                 },
                 "notAllPodsReady": {
                     "enabled": false
@@ -228,6 +219,145 @@
                     "enabled": true
                 }
             }
+        }
+      ]
+    body_format: json
+    status_code: 200
+
+- name: Configure global OneAgent features
+  uri:
+    url: "{{ dynatrace_tenant_url }}/api/v2/settings/objects"
+    method: POST
+    headers:
+      accept: "application/json; charset=utf-8"
+      Content-Type: "application/json; charset=utf-8"
+      Authorization: "Api-Token {{ dt_access_token_name }}"
+    body: |
+      [
+        {
+          "schemaId": "builtin:oneagent.features",
+          "scope": "environment",
+          "value": {
+            "enabled": true,
+            "key": "JAVA_LOG_ENRICHMENT_TOMCAT_FORCIBLE"
+          }
+        },
+        {
+          "schemaId": "builtin:oneagent.features",
+          "scope": "environment",
+          "value": {
+            "enabled": true,
+            "instrumentation": true,
+            "key": "SENSOR_PHP_LOG_ENRICHMENT"
+          }
+        },
+        {
+          "schemaId": "builtin:oneagent.features",
+          "scope": "environment",
+          "value": {
+            "enabled": true,
+            "key": "JAVA_LOG_ENRICHMENT_UNSTRUCTURED"
+          }
+        },
+        {
+          "schemaId": "builtin:oneagent.features",
+          "scope": "environment",
+          "value": {
+            "enabled": true,
+            "key": "GO_LOG_ENRICHMENT"
+          }
+        },
+        {
+          "schemaId": "builtin:oneagent.features",
+          "scope": "environment",
+          "value": {
+            "enabled": true,
+            "instrumentation": true,
+            "key": "SENSOR_DOTNET_LOG_ENRICHMENT"
+          }
+        },
+        {
+          "schemaId": "builtin:oneagent.features",
+          "scope": "environment",
+          "value": {
+            "enabled": true,
+            "key": "NODEJS_LOG_ENRICHMENT_UNSTRUCTURED"
+          }
+        },
+        {
+          "schemaId": "builtin:oneagent.features",
+          "scope": "environment",
+          "value": {
+            "enabled": true,
+            "key": "DOTNET_LOG_ENRICHMENT_SERILOG"
+          }
+        },
+        {
+          "schemaId": "builtin:oneagent.features",
+          "scope": "environment",
+          "value": {
+            "enabled": false,
+            "key": "LOG_ENRICHMENT_METADATA"
+          }
+        },
+        {
+          "schemaId": "builtin:oneagent.features",
+          "scope": "environment",
+          "value": {
+            "enabled": true,
+            "key": "NODEJS_LOG_ENRICHMENT"
+          }
+        },
+        {
+          "schemaId": "builtin:oneagent.features",
+          "scope": "environment",
+          "value": {
+            "enabled": true,
+            "key": "DOTNET_LOG_ENRICHMENT_MSEXTENSIONLOGGING"
+          }
+        },
+        {
+          "schemaId": "builtin:oneagent.features",
+          "scope": "environment",
+          "value": {
+            "enabled": true,
+            "instrumentation": true,
+            "key": "SENSOR_NGINX_LOG_ENRICHMENT"
+          }
+        },
+        {
+          "schemaId": "builtin:oneagent.features",
+          "scope": "environment",
+          "value": {
+            "enabled": true,
+            "key": "DOTNET_LOG_ENRICHMENT_UNSTRUCTURED"
+          }
+        },
+        {
+          "schemaId": "builtin:oneagent.features",
+          "scope": "environment",
+          "value": {
+            "enabled": true,
+            "key": "DOTNET_LOG_ENRICHMENT_LOG4NET"
+          }
+        },
+        {
+          "schemaId": "builtin:oneagent.features",
+          "scope": "environment",
+          "value": {
+            "enabled": true,
+            "instrumentation": true,
+            "key": "SENSOR_JAVA_LOG_ENRICHMENT"
+          }
+        },
+        {
+          "schemaId": "builtin:oneagent.features",
+          "scope": "environment",
+          "value": {
+            "enabled": true,
+            "instrumentation": true,
+            "key": "SENSOR_APACHE_LOG_ENRICHMENT"
+          }
         }
       ]
     body_format: json
